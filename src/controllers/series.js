@@ -1,10 +1,10 @@
-const SerieDAO = new require('../models/Series');
+const seriesDAO = new (require('../models/Series'))();
 
 module.exports = {
 
     async listar(req,res){
         
-        const lista = await seriesDao.lista();
+        const lista = await seriesDAO.lista();
 
         if(lista)
             return res.send(lista);
@@ -18,7 +18,7 @@ module.exports = {
         let serie = req.body;
 
         try{
-            const resultado = await seriesDao.insere(serie);
+            const resultado = await seriesDAO.insere(serie);
             const insertId = resultado.insertId;
             serie = {id:insertId, ...serie}
             return res.status(201).send(serie);
@@ -32,7 +32,7 @@ module.exports = {
 
         const id = req.params.id;
 
-        const serie = await seriesDao.buscaPorId(id);
+        const serie = await seriesDAO.buscaPorId(id);
 
         if(!serie)
             return res.status(404).send({erro: 'Série não encontrada'});
@@ -46,7 +46,7 @@ module.exports = {
         const serie = req.body;
         serie.id = id;
 
-        const retorno = await seriesDao.atualiza(serie);
+        const retorno = await seriesDAO.atualiza(serie);
 
         if(!retorno.affectedRows){
             return res.status(404).send({erro: 'Série não encontrada'});
@@ -57,7 +57,7 @@ module.exports = {
     async delete(req,res){
         const id = req.params.id;
 
-        const retorno = await serieDAO.delete(id);
+        const retorno = await seriesDAO.delete(id);
 
         if(!serie.affectedRows){
             return res.status(404).send({erro: 'Série não encontrada'}); 
